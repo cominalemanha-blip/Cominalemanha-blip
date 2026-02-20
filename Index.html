@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reclame Aqui (Literalmente) - Agende sua sessão de reclamação</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .tagline {
+            font-size: 1.1em;
+            color: #888;
+            font-style: italic;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 2.5em;
+            color: #764ba2;
+            margin-bottom: 20px;
+        }
+
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .benefit-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 30px;
+            border-radius: 15px;
+            color: white;
+            transition: transform 0.3s;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        /* Booking Section */
+        .booking-section {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .booking-section h2 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+
+        .booking-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 1.1em;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .day-slot {
+            padding: 15px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .day-slot:hover {
+            border-color: #667eea;
+            background: #f5f7ff;
+        }
+
+        .day-slot.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .day-slot.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .time-slot {
+            padding: 12px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .time-slot:hover {
+            border-color: #764ba2;
+            background: #f9f5ff;
+        }
+
+        .time-slot.selected {
+            background: #764ba2;
+            color: white;
+            border-color: #764ba2;
+        }
+
+        .time-slot.unavailable {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #ccc;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #bbb;
+            box-shadow: none;
+        }
+
+        /* Pricing */
+        .pricing {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .pricing h2 {
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+
+        .price-card {
+            max-width: 400px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            border-radius: 20px;
+            color: white;
+        }
+
+        .price-amount {
+            font-size: 3em;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+
+        .price-duration {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            color: #666;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            max-width: 500px;
+            text-align: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h3 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .emoji {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        /* PIX Styles */
+        .pix-container {
+            background: #f5f7ff;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .pix-qr-placeholder {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            background: white;
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pix-key-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+            margin: 20px 0;
+        }
+
+        .pix-key {
+            font-family: monospace;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #667eea;
+            word-break: break-all;
+            margin: 10px 0;
+        }
+
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #764ba2;
+        }
+
+        .copy-btn.copied {
+            background: #28a745;
+        }
+
+        .payment-status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .payment-status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .payment-status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .hero h2 {
+                font-size: 1.8em;
+            }
+
+            .benefits {
+                grid-template-columns: 1fr;
+            }
+
+            .calendar-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .modal-content {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🗣️ Reclame Aqui (Literalmente)</h1>
+            <p class="subtitle">O único lugar onde reclamar é OFICIAL</p>
+            <p class="tagline">"Porque todo mundo precisa de 10 minutos para mandar tudo pra... bem, você sabe"</p>
+        </header>
+
+        <!-- Hero -->
+        <div class="hero">
+            <h2>Cansou de guardar tudo pra você?</h2>
+            <p style="font-size: 1.2em; color: #666; margin-bottom: 30px;">
+                Aqui você tem 10 minutos INTEIROS para reclamar de TUDO: do chefe chato, do trânsito, 
+                da política, do vizinho barulhento, da fila do banco, do preço do cafezinho... 
+                A gente SÓ ESCUTA. Sem julgamentos, sem conselhos não pedidos. 
+                Só você e suas reclamações em paz! 
+            </p>
+            
+            <div class="benefits">
+                <div class="benefit-card">
+                    <h3>😤 Reclame À Vontade</h3>
+                    <p>10 minutos só seus. Pode xingar, resmungar, bufar... liberou geral!</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>🤐 Zero Julgamento</h3>
+                    <p>A gente NÃO vai te dizer "relaxa" ou "poderia ser pior". Promessa!</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>💻 100% Online</h3>
+                    <p>No conforto da sua casa (ou do banheiro do trabalho, sem julgamentos)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Section -->
+        <div class="booking-section">
+            <h2>📅 Agende Sua Sessão de Reclamação</h2>
+            <form class="booking-form" id="bookingForm">
+                <div class="form-group">
+                    <label>👤 Seu Nome (ou apelido, tanto faz)</label>
+                    <input type="text" id="name" required placeholder="Ex: Pessoa Estressada">
+                </div>
+
+                <div class="form-group">
+                    <label>📧 Email</label>
+                    <input type="email" id="email" required placeholder="seuemail@exemplo.com">
+                </div>
+
+                <div class="form-group">
+                    <label>📱 Telefone (para confirmar que você não vai dar bolo)</label>
+                    <input type="tel" id="phone" required placeholder="(00) 00000-0000">
+                </div>
+
+                <div class="form-group">
+                    <label>📆 Escolha o Dia (os próximos 7 dias disponíveis)</label>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>⏰ Escolha o Horário</label>
+                    <div class="time-slots" id="timeSlots"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>💬 Do que você vai reclamar hoje? (opcional, mas vai que você esquece)</label>
+                    <textarea id="topic" rows="4" placeholder="Ex: Do meu chefe que marcou reunião às 18h de sexta-feira..."></textarea>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn" disabled>
+                    🎯 QUERO RECLAMAR AGORA!
+                </button>
+            </form>
+        </div>
+
+        <!-- Pricing -->
+        <div class="pricing">
+            <h2>💰 Investimento em Saúde Mental</h2>
+            <div class="price-card">
+                <p style="font-size: 1.2em;">Sessão de Reclamação</p>
+                <div class="price-amount">R$ 10,00</div>
+                <p class="price-duration">10 minutos de pura catarse</p>
+                <p style="margin-top: 20px; opacity: 0.9;">
+                    ✅ Online via videochamada<br>
+                    ✅ Ouvinte profissional<br>
+                    ✅ Sem conselhos chatos<br>
+                    ✅ Satisfação garantida (ou pelo menos alívio)
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p><strong>Reclame Aqui (Literalmente)</strong></p>
+            <p>Porque reclamar faz bem pra alma 💜</p>
+            <p style="margin-top: 15px; font-size: 0.9em;">
+                Fncomin@hotmail.com | WhatsApp: +49 15730704215
+            </p>
+        </footer>
+    </div>
+
+    <!-- PIX Payment Modal -->
+    <div class="modal" id="pixModal">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="emoji">📱</div>
+            <h3>Pagamento via PIX</h3>
+            
+            <div class="pix-container">
+                <div class="pix-qr-placeholder">
+                    <p style="color: #999; text-align: center; padding: 20px; font-size: 0.9em;">
+                        QR Code PIX<br>
+                        (Escaneie com seu app bancário)
+                    </p>
+                </div>
+
+                <div class="pix-key-box">
+                    <p style="color: #666; font-size: 0.9em; margin-bottom: 10px;">Chave PIX (Email):</p>
+                    <div class="pix-key" id="pixKey">Fncomin@hotmail.com</div>
+                    <button class="copy-btn" id="copyBtn" onclick="copyPixKey()">
+                        📋 Copiar Chave
+                    </button>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 10px; margin-top: 15px;">
+                    <p style="color: #888; font-size: 0.9em; margin-bottom: 5px;">Valor:</p>
+                    <p style="font-size: 1.8em; font-weight: 700; color: #667eea;">R$ 10,00</p>
+                </div>
+            </div>
+
+            <div class="payment-status pending" id="paymentStatus">
+                ⏳ Aguardando pagamento...<br>
+                <small>Após pagar, clique em "Já paguei" abaixo</small>
+            </div>
+
+            <button class="btn" onclick="confirmPixPayment()" style="margin-top: 20px;">
+                ✅ Já fiz o pagamento
+            </button>
+
+            <button class="btn btn-secondary" onclick="closePixModal()">
+                Voltar
+            </button>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="emoji">🎉</div>
+            <h3>Agendamento Confirmado!</h3>
+            <p style="font-size: 1.1em; color: #666; margin: 20px 0;">
+                Recebemos seu agendamento!<br>
+                Assim que confirmarmos o pagamento, você receberá um email com o link da videochamada.
+            </p>
+            <div style="background: #f5f7ff; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: left;">
+                <p style="color: #667eea; font-weight: 600; margin-bottom: 10px;">Detalhes da sua sessão:</p>
+                <p id="bookingDetails" style="color: #666; line-height: 1.6;"></p>
+            </div>
+            <p style="color: #888; font-size: 0.9em;">
+                💡 <strong>Dica:</strong> Prepare suas reclamações com antecedência!<br>
+                Tempo é dinheiro (ou nesse caso, R$ 10,00 😄)
+            </p>
+            <button class="btn" onclick="closeSuccessModal()" style="margin-top: 20px;">
+                Fechar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Configurações
+        const PIX_KEY = 'Fncomin@hotmail.com';
+        const SESSION_PRICE = 10.00;
+
+        // Gerar calendário dos próximos 7 dias
+        function generateCalendar() {
+            const calendarGrid = document.getElementById('calendarGrid');
+            const today = new Date();
+            
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                
+                const daySlot = document.createElement('div');
+                daySlot.className = 'day-slot';
+                daySlot.dataset.date = date.toISOString().split('T')[0];
+                
+                const dayName = date.toLocaleDateString('pt-BR', { weekday: 'short' });
+                const dayNumber = date.getDate();
+                const month = date.toLocaleDateString('pt-BR', { month: 'short' });
+                
+                daySlot.innerHTML = `
+                    <div style="font-weight: 600; text-transform: uppercase; font-size: 0.8em;">${dayName}</div>
+                    <div style="font-size: 1.5em; font-weight: 700; margin: 5px 0;">${dayNumber}</div>
+                    <div style="font-size: 0.8em; opacity: 0.7;">${month}</div>
+                `;
+                
+                daySlot.addEventListener('click', () => selectDay(daySlot));
+                calendarGrid.appendChild(daySlot);
+            }
+        }
+
+        // Selecionar dia
+        function selectDay(daySlot) {
+            document.querySelectorAll('.day-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            daySlot.classList.add('selected');
+            generateTimeSlots();
+            updateSubmitButton();
+        }
+
+        // Gerar horários disponíveis
+        function generateTimeSlots() {
+            const timeSlotsContainer = document.getElementById('timeSlots');
+            timeSlotsContainer.innerHTML = '';
+            
+            const hours = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', 
+                          '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', 
+                          '17:00', '17:30', '18:00', '18:30', '19:00', '19:30'];
+            
+            hours.forEach(hour => {
+                const timeSlot = document.createElement('div');
+                timeSlot.className = 'time-slot';
+                timeSlot.textContent = hour;
+                timeSlot.dataset.time = hour;
+                
+                // Simular alguns horários indisponíveis aleatoriamente
+                if (Math.random() > 0.7) {
+                    timeSlot.classList.add('unavailable');
+                } else {
+                    timeSlot.addEventListener('click', () => selectTime(timeSlot));
+                }
+                
+                timeSlotsContainer.appendChild(timeSlot);
+            });
+        }
+
+        // Selecionar horário
+        function selectTime(timeSlot) {
+            if (timeSlot.classList.contains('unavailable')) return;
+            
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            timeSlot.classList.add('selected');
+            updateSubmitButton();
+        }
+
+        // Atualizar botão de envio
+        function updateSubmitButton() {
+            const submitBtn = document.getElementById('submitBtn');
+            const selectedDay = document.querySelector('.day-slot.selected');
+            const selectedTime = document.querySelector('.time-slot.selected');
+            
+            submitBtn.disabled = !(selectedDay && selectedTime);
+        }
+
+        // Submeter formulário
+        document.getElementById('bookingForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const selectedDay = document.querySelector('.day-slot.selected').dataset.date;
+            const selectedTime = document.querySelector('.time-slot.selected').dataset.time;
+            const topic = document.getElementById('topic').value;
+            
+            // Salvar dados do agendamento
+            window.bookingData = { 
+                name, 
+                email, 
+                phone, 
+                selectedDay, 
+                selectedTime, 
+                topic,
+                price: SESSION_PRICE
+            };
+            
+            // Mostrar modal de pagamento PIX
+            document.getElementById('pixModal').classList.add('active');
+        });
+
+        // Copiar chave PIX
+        function copyPixKey() {
+            const pixKey = document.getElementById('pixKey').textContent;
+            const copyBtn = document.getElementById('copyBtn');
+            
+            navigator.clipboard.writeText(pixKey).then(() => {
+                copyBtn.textContent = '✅ Copiado!';
+                copyBtn.classList.add('copied');
+                
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copiar Chave';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                // Fallback para navegadores antigos
+                const textArea = document.createElement('textarea');
+                textArea.value = pixKey;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                copyBtn.textContent = '✅ Copiado!';
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copiar Chave';
+                }, 2000);
+            });
+        }
+
+        // Confirmar pagamento PIX
+        function confirmPixPayment() {
+            const statusDiv = document.getElementById('paymentStatus');
+            statusDiv.className = 'payment-status success';
+            statusDiv.innerHTML = '✅ Pagamento confirmado!<br><small>Processando seu agendamento...</small>';
+            
+            setTimeout(() => {
+                closePixModal();
+                showSuccessModal();
+            }, 1500);
+        }
+
+        // Mostrar modal de sucesso
+        function showSuccessModal() {
+            const data = window.bookingData;
+            const date = new Date(data.selectedDay);
+            const dateFormatted = date.toLocaleDateString('pt-BR', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            document.getElementById('bookingDetails').innerHTML = `
+                <strong>👤 Nome:</strong> ${data.name}<br>
+                <strong>📅 Data:</strong> ${dateFormatted}<br>
+                <strong>⏰ Horário:</strong> ${data.selectedTime}<br>
+                <strong>📧 Email:</strong> ${data.email}<br>
+                <strong>💰 Valor pago:</strong> R$ ${data.price.toFixed(2).replace('.', ',')}
+            `;
+            
+            document.getElementById('successModal').classList.add('active');
+            
+            // Resetar formulário
+            document.getElementById('bookingForm').reset();
+            document.querySelectorAll('.day-slot, .time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            updateSubmitButton();
+            
+            // Resetar status do PIX para próxima vez
+            const statusDiv = document.getElementById('paymentStatus');
+            statusDiv.className = 'payment-status pending';
+            statusDiv.innerHTML = '⏳ Aguardando pagamento...<br><small>Após pagar, clique em "Já paguei" abaixo</small>';
+        }
+
+        // Fechar modais
+        function closePixModal() {
+            document.getElementById('pixModal').classList.remove('active');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.remove('active');
+        }
+
+        // Fechar modal ao clicar fora
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+
+        // Inicializar página
+        generateCalendar();
+    </script>
+</body>
+</html>
